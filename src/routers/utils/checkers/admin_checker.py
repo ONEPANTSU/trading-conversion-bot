@@ -2,7 +2,7 @@ import functools
 
 from aiogram.types import CallbackQuery, Message
 
-from utils.language_handler import get_language
+from src.utils.language_handler import get_language
 
 
 def admin_check(func):

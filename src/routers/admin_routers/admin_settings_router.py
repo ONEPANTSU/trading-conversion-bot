@@ -22,7 +22,7 @@ from src.routers.utils.keyboards.admin_keyboards import (
 from src.routers.utils.keyboards.common_keyboards import get_submit_inline
 from src.routers.utils.states.admin_states.add_admin_state import AddAdminState
 from src.services.admin_service import AdminService
-from utils.language_handler import get_language
+from src.utils.language_handler import get_language
 
 
 class AdminSettingsRouter(Router):

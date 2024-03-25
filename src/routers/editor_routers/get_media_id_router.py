@@ -8,7 +8,7 @@ from src.routers.utils.escape_markdown import escape_markdown
 from src.routers.utils.filters.buttons_filter import ButtonsFilter
 from src.routers.utils.states.editor_states.media_id_state import MediaIDState
 from src.services.editor_service import EditorService
-from utils.language_handler import get_language
+from src.utils.language_handler import get_language
 
 
 class GetMediaIDRouter(Router):

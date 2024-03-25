@@ -19,7 +19,7 @@ from src.routers.utils.states.editor_states.send_private_post_state import (
 )
 from src.services.editor_service import EditorService
 from src.services.user_service import UserService
-from utils.language_handler import get_language
+from src.utils.language_handler import get_language
 
 
 class AbstractPostSendingRouter(Router):
