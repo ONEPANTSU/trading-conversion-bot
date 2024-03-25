@@ -32,7 +32,7 @@ jobs:
         run: |
           touch .env
           echo "${{ secrets.ENV }}" > .env
-          docker-compose -f docker-compose.yml build
+          docker-compose -f docker-compose.yml build --no-cache
           docker-compose -f docker-compose.yml push
 
       - name: Deploy to the Server
