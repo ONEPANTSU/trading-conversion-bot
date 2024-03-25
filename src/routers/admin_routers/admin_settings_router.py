@@ -2,6 +2,7 @@ from aiogram import F, Router
 from aiogram.fsm.context import FSMContext
 from aiogram.types import CallbackQuery, Message
 
+from routers.utils.keyboards.buttons.admin_buttons import get_admin_buttons
 from src.core.dto.user import User
 from src.core.utils.default_roles import DEFAULT_ROLES_ID
 from src.routers.utils.callbacks.admin_callback_data import (
@@ -10,14 +11,18 @@ from src.routers.utils.callbacks.admin_callback_data import (
     SUBMIT_ADD_ADMIN_DATA,
     SUBMIT_REMOVE_ADMIN_DATA,
 )
-from src.routers.utils.checkers.admin_checker import admin_check, callback_admin_check
+from src.routers.utils.checkers.admin_checker import (
+    admin_check,
+    callback_admin_check,
+)
 from src.routers.utils.filters.buttons_filter import ButtonsFilter
-from src.routers.utils.keyboards.admin_keyboards import get_admin_settings_inline
+from src.routers.utils.keyboards.admin_keyboards import (
+    get_admin_settings_inline,
+)
 from src.routers.utils.keyboards.common_keyboards import get_submit_inline
-from routers.utils.keyboards.buttons.admin_buttons import get_admin_buttons
-from utils.language_handler import get_language
 from src.routers.utils.states.admin_states.add_admin_state import AddAdminState
 from src.services.admin_service import AdminService
+from utils.language_handler import get_language
 
 
 class AdminSettingsRouter(Router):
@@ -31,7 +36,9 @@ class AdminSettingsRouter(Router):
         self.message(ButtonsFilter(admin_buttons["admins-settings"]))(
             self.admin_settings
         )
-        self.callback_query(F.data.startswith(REMOVE_ADMIN_DATA))(self.remove_admin)
+        self.callback_query(F.data.startswith(REMOVE_ADMIN_DATA))(
+            self.remove_admin
+        )
         self.callback_query(F.data.startswith(SUBMIT_REMOVE_ADMIN_DATA))(
             self.remove_admin_submit
         )
@@ -70,17 +77,21 @@ class AdminSettingsRouter(Router):
     @callback_admin_check
     async def remove_admin_submit(self, callback: CallbackQuery):
         lang_text = get_language(callback.from_user.language_code)
-        admin_id, submit = callback.data.replace(SUBMIT_REMOVE_ADMIN_DATA, "").split(
-            "-"
-        )
+        admin_id, submit = callback.data.replace(
+            SUBMIT_REMOVE_ADMIN_DATA, ""
+        ).split("-")
         admin = await self.admin_service.get_user(int(admin_id))
         if submit == "yes":
             await self.admin_service.delete_user(int(admin_id))
             await callback.message.edit_text(
-                text=lang_text.messages["admin-removed"].format(username=admin.username)
+                text=lang_text.messages["admin-removed"].format(
+                    username=admin.username
+                )
             )
         else:
-            await callback.message.edit_text(text=lang_text.messages["cancelled"])
+            await callback.message.edit_text(
+                text=lang_text.messages["cancelled"]
+            )
 
     @callback_admin_check
     async def add_admin(self, callback: CallbackQuery, state: FSMContext):
@@ -113,7 +124,9 @@ class AdminSettingsRouter(Router):
             await state.clear()
 
     @callback_admin_check
-    async def add_admin_submit(self, callback: CallbackQuery, state: FSMContext):
+    async def add_admin_submit(
+        self, callback: CallbackQuery, state: FSMContext
+    ):
         lang_text = get_language(callback.from_user.language_code)
         submit = callback.data.replace(SUBMIT_ADD_ADMIN_DATA, "")
         if submit == "yes":
@@ -121,8 +134,12 @@ class AdminSettingsRouter(Router):
             user = state_data["user"]
             await self.admin_service.create_user(user)
             await callback.message.edit_text(
-                text=lang_text.messages["admin-added"].format(username=user.username)
+                text=lang_text.messages["admin-added"].format(
+                    username=user.username
+                )
             )
         else:
-            await callback.message.edit_text(text=lang_text.messages["cancelled"])
+            await callback.message.edit_text(
+                text=lang_text.messages["cancelled"]
+            )
         await state.clear()

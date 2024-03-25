@@ -1,11 +1,9 @@
-from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 
 from src.routers.utils.callbacks.user_callback_data import USER_START_DATA
 
 
-def get_user_start_inline(
-    buttons: dict[str, str]
-) -> InlineKeyboardMarkup:
+def get_user_start_inline(buttons: dict[str, str]) -> InlineKeyboardMarkup:
     keyboard = [
         [
             InlineKeyboardButton(

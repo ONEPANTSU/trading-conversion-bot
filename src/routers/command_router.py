@@ -6,11 +6,11 @@ from src.core.dto.user import User
 from src.routers.utils.keyboards.admin_keyboards import get_admin_keyboard
 from src.routers.utils.keyboards.editor_keyboards import get_editor_keyboard
 from src.routers.utils.keyboards.user_keyboards import get_user_start_inline
-from utils.language_handler import get_language
 from src.services.admin_service import AdminService
 from src.services.editor_service import EditorService
 from src.services.user_service import UserService
 from static.video import get_videos
+from utils.language_handler import get_language
 
 
 class CommandRouter(Router):
@@ -80,9 +80,7 @@ class CommandRouter(Router):
         lang_code = message.from_user.language_code
         lang_text = get_language(lang_code)
 
-        await message.answer_video(
-            video=get_videos(lang_code)["start"]
-        )
+        await message.answer_video(video=get_videos(lang_code)["start"])
         await message.answer(
             text=lang_text.messages["user-start"],
             reply_markup=get_user_start_inline(buttons=lang_text.buttons),

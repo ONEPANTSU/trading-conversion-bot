@@ -1,24 +1,20 @@
 from aiogram import Router
 from aiogram.fsm.context import FSMContext
-from aiogram.types import (
-    Message,
-)
+from aiogram.types import Message
 
-from src.routers.utils.checkers.editor_checker import (
-    editor_check,
-)
+from routers.utils.keyboards.buttons.editor_buttons import get_editor_buttons
+from src.routers.utils.checkers.editor_checker import editor_check
 from src.routers.utils.escape_markdown import escape_markdown
 from src.routers.utils.filters.buttons_filter import ButtonsFilter
-from routers.utils.keyboards.buttons.editor_buttons import get_editor_buttons
-from utils.language_handler import get_language
 from src.routers.utils.states.editor_states.media_id_state import MediaIDState
 from src.services.editor_service import EditorService
+from utils.language_handler import get_language
 
 
 class GetMediaIDRouter(Router):
     def __init__(
-            self,
-            editor_service: EditorService,
+        self,
+        editor_service: EditorService,
     ):
 
         super().__init__(name="get-media-id-router")
@@ -45,15 +41,11 @@ class GetMediaIDRouter(Router):
         media_id = self.__get_media_id_from_message(message)
         if media_id:
             await message.answer(
-                text=escape_markdown(
-                    media_id
-                ),
+                text=escape_markdown(media_id),
             )
         else:
             lang_text = get_language(message.from_user.language_code)
-            await message.answer(
-                text=lang_text.messages["media-type-error"]
-            )
+            await message.answer(text=lang_text.messages["media-type-error"])
         await state.clear()
 
     @staticmethod

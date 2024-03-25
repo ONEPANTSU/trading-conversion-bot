@@ -16,7 +16,9 @@ class SQLAlchemyRepository(AbstractRepository):
     def __init__(self, database: DataBase):
         self.db = database
 
-    async def create(self, model: model_table) -> int | uuid.UUID | IntegrityError:
+    async def create(
+        self, model: model_table
+    ) -> int | uuid.UUID | IntegrityError:
         try:
             async with self.db.session_maker() as session:
                 model_id = await session.execute(
@@ -30,11 +32,15 @@ class SQLAlchemyRepository(AbstractRepository):
             logger.error(str(error))
             raise error
 
-    async def get(self, model_id: int | uuid.UUID) -> model_table | None | Exception:
+    async def get(
+        self, model_id: int | uuid.UUID
+    ) -> model_table | None | Exception:
         try:
             async with self.db.session_maker() as session:
                 models = await session.execute(
-                    select(self.model_table).filter(self.model_table.id == model_id)
+                    select(self.model_table).filter(
+                        self.model_table.id == model_id
+                    )
                 )
             return models.scalars().first()
         except Exception as error:
@@ -69,7 +75,9 @@ class SQLAlchemyRepository(AbstractRepository):
         try:
             async with self.db.session_maker() as session:
                 await session.execute(
-                    delete(self.model_table).where(self.model_table.id == model_id)
+                    delete(self.model_table).where(
+                        self.model_table.id == model_id
+                    )
                 )
                 await session.commit()
         except IntegrityError as error:

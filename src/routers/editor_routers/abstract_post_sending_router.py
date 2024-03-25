@@ -1,10 +1,8 @@
 from aiogram import F, Router
 from aiogram.fsm.context import FSMContext
-from aiogram.types import (
-    CallbackQuery,
-    Message,
-)
+from aiogram.types import CallbackQuery, Message
 
+from routers.utils.keyboards.buttons.editor_buttons import get_editor_buttons
 from src.routers.editor_routers.post_sending.post_sender import PostSender
 from src.routers.utils.checkers.editor_checker import (
     callback_editor_check,
@@ -13,25 +11,28 @@ from src.routers.utils.checkers.editor_checker import (
 from src.routers.utils.filters.buttons_filter import ButtonsFilter
 from src.routers.utils.keyboards.common_keyboards import get_submit_inline
 from src.routers.utils.keyboards.editor_keyboards import get_language_inline
-from routers.utils.keyboards.buttons.editor_buttons import get_editor_buttons
-from utils.language_handler import get_language
-from src.routers.utils.states.editor_states.send_post_state import SendPostState
-from src.routers.utils.states.editor_states.send_private_post_state import SendPrivatePostState
+from src.routers.utils.states.editor_states.send_post_state import (
+    SendPostState,
+)
+from src.routers.utils.states.editor_states.send_private_post_state import (
+    SendPrivatePostState,
+)
 from src.services.editor_service import EditorService
 from src.services.user_service import UserService
+from utils.language_handler import get_language
 
 
 class AbstractPostSendingRouter(Router):
     def __init__(
-            self,
-            editor_service: EditorService,
-            user_service: UserService,
-            name: str,
-            send_post_button: str,
-            choose_lang_callback_data: str,
-            submit_send_callback_data: str,
-            state: type[SendPostState | SendPrivatePostState],
-            post_sender: type[PostSender]
+        self,
+        editor_service: EditorService,
+        user_service: UserService,
+        name: str,
+        send_post_button: str,
+        choose_lang_callback_data: str,
+        submit_send_callback_data: str,
+        state: type[SendPostState | SendPrivatePostState],
+        post_sender: type[PostSender],
     ):
 
         super().__init__(name=name)
@@ -84,7 +85,9 @@ class AbstractPostSendingRouter(Router):
         lang_text = get_language(message.from_user.language_code)
 
         if message.media_group_id:
-            return await message.answer(text=lang_text.messages["media-group-error"])
+            return await message.answer(
+                text=lang_text.messages["media-group-error"]
+            )
 
         await self.post_sender.get_content(message, state)
 
@@ -98,7 +101,7 @@ class AbstractPostSendingRouter(Router):
 
     @callback_editor_check
     async def send_post_message_submit(
-            self, callback: CallbackQuery, state: FSMContext
+        self, callback: CallbackQuery, state: FSMContext
     ):
         lang_text = get_language(callback.from_user.language_code)
         submit = callback.data.replace(self.submit_send_data, "")
@@ -109,5 +112,7 @@ class AbstractPostSendingRouter(Router):
                 text=lang_text.messages["mailing-was-sent"]
             )
         else:
-            await callback.message.edit_text(text=lang_text.messages["cancelled"])
+            await callback.message.edit_text(
+                text=lang_text.messages["cancelled"]
+            )
         await state.clear()

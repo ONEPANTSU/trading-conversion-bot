@@ -1,7 +1,13 @@
 from aiogram.enums import ContentType
 from aiogram.fsm.context import FSMContext
-from aiogram.types import Message, InputMediaPhoto, InputMediaVideo, InputMediaDocument, InputMediaAnimation, \
-    CallbackQuery
+from aiogram.types import (
+    CallbackQuery,
+    InputMediaAnimation,
+    InputMediaDocument,
+    InputMediaPhoto,
+    InputMediaVideo,
+    Message,
+)
 
 from src.services.user_service import UserService
 
@@ -42,18 +48,28 @@ class PostSender:
         media = []
         text = message.md_text
         if message.photo:
-            media.append(InputMediaPhoto(media=message.photo[-1].file_id, caption=text))
+            media.append(
+                InputMediaPhoto(media=message.photo[-1].file_id, caption=text)
+            )
         if message.video:
-            media.append(InputMediaVideo(media=message.video.file_id, caption=text))
+            media.append(
+                InputMediaVideo(media=message.video.file_id, caption=text)
+            )
         if message.audio:
-            media.append(InputMediaVideo(media=message.audio.file_id, caption=text))
+            media.append(
+                InputMediaVideo(media=message.audio.file_id, caption=text)
+            )
         if message.document:
             media.append(
-                InputMediaDocument(media=message.document.file_id, caption=text)
+                InputMediaDocument(
+                    media=message.document.file_id, caption=text
+                )
             )
         if message.animation:
             media.append(
-                InputMediaAnimation(media=message.animation.file_id, caption=text)
+                InputMediaAnimation(
+                    media=message.animation.file_id, caption=text
+                )
             )
         return media, text
 
@@ -67,7 +83,9 @@ class PostSender:
         elif state_data.get("media", None):
             await self.__send_media(callback, state_data)
 
-    async def __send_video_note(self, callback: CallbackQuery, state_data: dict[str,]):
+    async def __send_video_note(
+        self, callback: CallbackQuery, state_data: dict[str,]
+    ):
         language_code = state_data["language_code"]
         file_id = state_data["video_note"]
         users = await self.__get_users(language_code)
@@ -77,7 +95,9 @@ class PostSender:
                 video_note=file_id,
             )
 
-    async def __send_voice(self, callback: CallbackQuery, state_data: dict[str,]):
+    async def __send_voice(
+        self, callback: CallbackQuery, state_data: dict[str,]
+    ):
         language_code = state_data["language_code"]
         file_id = state_data["voice"]
         users = await self.__get_users(language_code)
@@ -87,14 +107,18 @@ class PostSender:
                 voice=file_id,
             )
 
-    async def __send_media(self, callback: CallbackQuery, state_data: dict[str,]):
+    async def __send_media(
+        self, callback: CallbackQuery, state_data: dict[str,]
+    ):
         media = state_data["media"]
         text = state_data["text"]
         language_code = state_data["language_code"]
         users = await self.__get_users(language_code)
         for user in users:
             if len(media) > 0:
-                await callback.bot.send_media_group(chat_id=user.id, media=media)
+                await callback.bot.send_media_group(
+                    chat_id=user.id, media=media
+                )
             else:
                 await callback.bot.send_message(chat_id=user.id, text=text)
 

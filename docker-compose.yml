@@ -26,5 +26,5 @@ services:
       - ../trading-conversion-bot/.env
     depends_on:
       - db
-    command: ["wait-for-it", "--timeout=60", "db:${DB_PORT}",
+    command: ["wait-for-it", "--timeout=180", "db:${DB_PORT}",
               "--", "sh", "-c", "alembic upgrade head && python3 run.py"]

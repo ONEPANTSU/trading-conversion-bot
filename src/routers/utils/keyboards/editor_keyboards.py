@@ -15,7 +15,9 @@ def get_editor_keyboard(buttons: dict[str, str]) -> ReplyKeyboardMarkup:
     return ReplyKeyboardMarkup(keyboard=keyboard, resize_keyboard=True)
 
 
-def get_language_inline(callback_data, buttons: dict[str, str]) -> InlineKeyboardMarkup:
+def get_language_inline(
+    callback_data, buttons: dict[str, str]
+) -> InlineKeyboardMarkup:
     keyboard = [
         [
             InlineKeyboardButton(

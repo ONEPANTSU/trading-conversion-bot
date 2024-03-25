@@ -27,8 +27,12 @@ class UserService(AbstractService):
         models = await self.repository.get_by_language(language_code)
         return [User(**user.get_dict()) for user in models]
 
-    async def get_users_with_privacy_by_language(self, language_code: str) -> list[User]:
-        models = await self.repository.get_with_privacy_by_language(language_code)
+    async def get_users_with_privacy_by_language(
+        self, language_code: str
+    ) -> list[User]:
+        models = await self.repository.get_with_privacy_by_language(
+            language_code
+        )
         return [User(**user.get_dict()) for user in models]
 
     async def create_user(self, user: User) -> None:

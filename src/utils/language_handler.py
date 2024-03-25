@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 
-from static.text.en import EN_BUTTONS, EN_MESSAGES, EN_COMMANDS
-from static.text.ru import RU_BUTTONS, RU_MESSAGES, RU_COMMANDS
+from static.text.en import EN_BUTTONS, EN_COMMANDS, EN_MESSAGES
+from static.text.ru import RU_BUTTONS, RU_COMMANDS, RU_MESSAGES
 
 
 @dataclass

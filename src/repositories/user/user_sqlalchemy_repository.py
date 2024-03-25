@@ -14,7 +14,9 @@ class UserSQLAlchemyRepository(SQLAlchemyRepository, ABC):
     model_table = User
     role_id = DEFAULT_ROLES_ID["user"]
 
-    async def create(self, model: model_table) -> int | uuid.UUID | IntegrityError:
+    async def create(
+        self, model: model_table
+    ) -> int | uuid.UUID | IntegrityError:
         model.role_id = self.role_id
         return await super().create(model)
 
@@ -37,7 +39,9 @@ class UserSQLAlchemyRepository(SQLAlchemyRepository, ABC):
             logger.error(str(error))
             raise error
 
-    async def get_with_privacy_by_language(self, language_code: str) -> list[User]:
+    async def get_with_privacy_by_language(
+        self, language_code: str
+    ) -> list[User]:
         try:
             async with self.db.session_maker() as session:
                 models = await session.execute(

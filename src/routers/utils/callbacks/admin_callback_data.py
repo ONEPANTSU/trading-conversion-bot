@@ -9,4 +9,3 @@ ADD_EDITOR_DATA = "add-editor"
 SUBMIT_ADD_EDITOR_DATA = "submit-add-editor"
 REMOVE_EDITOR_DATA = "remove-editor-"
 SUBMIT_REMOVE_EDITOR_DATA = "submit-remove-editor-"
-

@@ -8,7 +8,7 @@ from src.core.database import DataBase
 from src.repositories.repositories import Repositories
 from src.routers.routers import Routers
 from src.services.services import Services
-from utils.language_handler import LANGUAGES, get_language
+from src.utils.language_handler import LANGUAGES, get_language
 
 
 async def start_bot():
@@ -43,9 +43,8 @@ async def set_commands(bot: Bot):
     for lang_code in LANGUAGES:
         commands = [
             BotCommand(command=command, description=description)
-            for command, description in get_language(lang_code).commands.items()
+            for command, description in get_language(
+                lang_code
+            ).commands.items()
         ]
-        await bot.set_my_commands(
-            commands=commands,
-            language_code=lang_code
-        )
+        await bot.set_my_commands(commands=commands, language_code=lang_code)

@@ -7,7 +7,6 @@ from src.core.utils.default_language_code import DEFAULT_LANGUAGE_CODE
 from src.core.utils.default_roles import DEFAULT_ROLES_ID
 
 
-
 class User(Base):
     __tablename__ = "user"
 

@@ -2,6 +2,7 @@ from aiogram import F, Router
 from aiogram.fsm.context import FSMContext
 from aiogram.types import CallbackQuery, Message
 
+from routers.utils.keyboards.buttons.admin_buttons import get_admin_buttons
 from src.core.dto.user import User
 from src.core.utils.default_roles import DEFAULT_ROLES_ID
 from src.routers.utils.callbacks.admin_callback_data import (
@@ -10,19 +11,27 @@ from src.routers.utils.callbacks.admin_callback_data import (
     SUBMIT_ADD_EDITOR_DATA,
     SUBMIT_REMOVE_EDITOR_DATA,
 )
-from src.routers.utils.checkers.admin_checker import admin_check, callback_admin_check
+from src.routers.utils.checkers.admin_checker import (
+    admin_check,
+    callback_admin_check,
+)
 from src.routers.utils.filters.buttons_filter import ButtonsFilter
-from src.routers.utils.keyboards.admin_keyboards import get_editor_settings_inline
+from src.routers.utils.keyboards.admin_keyboards import (
+    get_editor_settings_inline,
+)
 from src.routers.utils.keyboards.common_keyboards import get_submit_inline
-from routers.utils.keyboards.buttons.admin_buttons import get_admin_buttons
-from utils.language_handler import get_language
-from src.routers.utils.states.admin_states.add_editor_state import AddEditorState
+from src.routers.utils.states.admin_states.add_editor_state import (
+    AddEditorState,
+)
 from src.services.admin_service import AdminService
 from src.services.editor_service import EditorService
+from utils.language_handler import get_language
 
 
 class EditorSettingsRouter(Router):
-    def __init__(self, editor_service: EditorService, admin_service: AdminService):
+    def __init__(
+        self, editor_service: EditorService, admin_service: AdminService
+    ):
         super().__init__(name="editor-settings-router")
 
         self.editor_service = editor_service
@@ -33,7 +42,9 @@ class EditorSettingsRouter(Router):
         self.message(ButtonsFilter(admin_buttons["editors-settings"]))(
             self.editor_settings
         )
-        self.callback_query(F.data.startswith(REMOVE_EDITOR_DATA))(self.remove_editor)
+        self.callback_query(F.data.startswith(REMOVE_EDITOR_DATA))(
+            self.remove_editor
+        )
         self.callback_query(F.data.startswith(SUBMIT_REMOVE_EDITOR_DATA))(
             self.remove_editor_submit
         )
@@ -49,7 +60,9 @@ class EditorSettingsRouter(Router):
         lang_text = get_language(message.from_user.language_code)
         await message.answer(
             text=lang_text.messages["editors-list"],
-            reply_markup=get_editor_settings_inline(editors, lang_text.buttons),
+            reply_markup=get_editor_settings_inline(
+                editors, lang_text.buttons
+            ),
         )
 
     @callback_admin_check
@@ -72,9 +85,9 @@ class EditorSettingsRouter(Router):
     @callback_admin_check
     async def remove_editor_submit(self, callback: CallbackQuery):
         lang_text = get_language(callback.from_user.language_code)
-        editor_id, submit = callback.data.replace(SUBMIT_REMOVE_EDITOR_DATA, "").split(
-            "-"
-        )
+        editor_id, submit = callback.data.replace(
+            SUBMIT_REMOVE_EDITOR_DATA, ""
+        ).split("-")
         editor = await self.editor_service.get_user(int(editor_id))
         if submit == "yes":
             await self.editor_service.delete_user(int(editor_id))
@@ -84,7 +97,9 @@ class EditorSettingsRouter(Router):
                 )
             )
         else:
-            await callback.message.edit_text(text=lang_text.messages["cancelled"])
+            await callback.message.edit_text(
+                text=lang_text.messages["cancelled"]
+            )
 
     @callback_admin_check
     async def add_editor(self, callback: CallbackQuery, state: FSMContext):
@@ -117,7 +132,9 @@ class EditorSettingsRouter(Router):
             await state.clear()
 
     @callback_admin_check
-    async def add_editor_submit(self, callback: CallbackQuery, state: FSMContext):
+    async def add_editor_submit(
+        self, callback: CallbackQuery, state: FSMContext
+    ):
         lang_text = get_language(callback.from_user.language_code)
         submit = callback.data.replace(SUBMIT_ADD_EDITOR_DATA, "")
         if submit == "yes":
@@ -125,8 +142,12 @@ class EditorSettingsRouter(Router):
             user = state_data["user"]
             await self.editor_service.create_user(user)
             await callback.message.edit_text(
-                text=lang_text.messages["editor-added"].format(username=user.username)
+                text=lang_text.messages["editor-added"].format(
+                    username=user.username
+                )
             )
         else:
-            await callback.message.edit_text(text=lang_text.messages["cancelled"])
+            await callback.message.edit_text(
+                text=lang_text.messages["cancelled"]
+            )
         await state.clear()

@@ -8,9 +8,9 @@ class EditorService(UserService):
     repository: EditorAbstractRepository
 
     def __init__(
-            self,
-            repository: EditorAbstractRepository,
-            admin_repository: AdminAbstractRepository,
+        self,
+        repository: EditorAbstractRepository,
+        admin_repository: AdminAbstractRepository,
     ):
         super().__init__(repository)
         self.admin_repository = admin_repository
