@@ -24,10 +24,10 @@ revision:
 	alembic revision --autogenerate -m "$(name)"
 
 bash-bot:
-	docker exec -it subscription-bot bash
+	docker exec -it trading-conversion-bot bash
 
 bash-db:
-	docker exec -it subscription-bot-db bash
+	docker exec -it trading-conversion-bot-db bash
 
 black:
 	black src -l 79
