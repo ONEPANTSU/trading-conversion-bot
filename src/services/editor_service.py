@@ -1,4 +1,3 @@
-from src.core.dto.user import User
 from src.repositories.admin import AdminAbstractRepository
 from src.repositories.editor import EditorAbstractRepository
 from src.services.user_service import UserService

@@ -1,6 +1,6 @@
 from collections import defaultdict
 
-from utils.language_handler import LANGUAGES
+from src.utils.language_handler import LANGUAGES
 
 EDITOR_BUTTONS = ["send-post", "send-private-post", "get-media-id"]
 

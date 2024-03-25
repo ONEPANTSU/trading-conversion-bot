@@ -1,7 +1,7 @@
 from collections import defaultdict
 
-from routers.utils.keyboards.buttons.editor_buttons import EDITOR_BUTTONS
-from utils.language_handler import LANGUAGES
+from src.routers.utils.keyboards.buttons.editor_buttons import EDITOR_BUTTONS
+from src.utils.language_handler import LANGUAGES
 
 ADMIN_BUTTONS = ["admins-settings", "editors-settings"] + EDITOR_BUTTONS
 

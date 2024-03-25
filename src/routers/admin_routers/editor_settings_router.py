@@ -2,7 +2,7 @@ from aiogram import F, Router
 from aiogram.fsm.context import FSMContext
 from aiogram.types import CallbackQuery, Message
 
-from routers.utils.keyboards.buttons.admin_buttons import get_admin_buttons
+from src.routers.utils.keyboards.buttons.admin_buttons import get_admin_buttons
 from src.core.dto.user import User
 from src.core.utils.default_roles import DEFAULT_ROLES_ID
 from src.routers.utils.callbacks.admin_callback_data import (

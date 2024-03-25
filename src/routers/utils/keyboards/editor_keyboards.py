@@ -5,7 +5,7 @@ from aiogram.types import (
     ReplyKeyboardMarkup,
 )
 
-from routers.utils.keyboards.buttons.editor_buttons import get_editor_buttons
+from src.routers.utils.keyboards.buttons.editor_buttons import get_editor_buttons
 
 
 def get_editor_keyboard(buttons: dict[str, str]) -> ReplyKeyboardMarkup:

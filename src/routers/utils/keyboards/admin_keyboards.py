@@ -5,7 +5,7 @@ from aiogram.types import (
     ReplyKeyboardMarkup,
 )
 
-from routers.utils.keyboards.buttons.admin_buttons import get_admin_buttons
+from src.routers.utils.keyboards.buttons.admin_buttons import get_admin_buttons
 from src.core.models import User
 from src.routers.utils.callbacks.admin_callback_data import (
     ADD_ADMIN_DATA,

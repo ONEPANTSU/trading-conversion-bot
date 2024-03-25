@@ -2,7 +2,7 @@ from aiogram import F, Router
 from aiogram.fsm.context import FSMContext
 from aiogram.types import CallbackQuery, Message
 
-from routers.utils.keyboards.buttons.editor_buttons import get_editor_buttons
+from src.routers.utils.keyboards.buttons.editor_buttons import get_editor_buttons
 from src.routers.editor_routers.post_sending.post_sender import PostSender
 from src.routers.utils.checkers.editor_checker import (
     callback_editor_check,
