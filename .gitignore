@@ -1,0 +1,8 @@
+/venv/
+../trading-conversion-bot/.idea/
+/.env
+*.log
+*.pyc
+.databases/
+
+.idea/

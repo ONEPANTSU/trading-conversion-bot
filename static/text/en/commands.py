@@ -1,0 +1,3 @@
+COMMANDS = {
+    "start": "Start!",
+}

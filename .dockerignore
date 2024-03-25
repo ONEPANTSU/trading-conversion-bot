@@ -1,0 +1,6 @@
+../trading-conversion-bot/venv/
+.idea/
+.git/
+*.pyc
+
+README.md

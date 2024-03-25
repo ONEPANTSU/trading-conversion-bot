@@ -1,0 +1,30 @@
+version: "3.8"
+
+
+services:
+  db:
+    image: postgres:16
+    container_name: trading-conversion-bot-db
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    env_file:
+      - ../trading-conversion-bot/.env
+    command: -p ${DB_PORT}
+    expose:
+      - 5432
+    volumes:
+      - ./.databases/postgres:/var/lib/postgresql/data
+
+  app:
+    build:
+      context: ../trading-conversion-bot
+    image: onepantsu/trading-conversion-bot:latest
+    container_name: trading-conversion-bot
+    env_file:
+      - ../trading-conversion-bot/.env
+    depends_on:
+      - db
+    command: ["wait-for-it", "--timeout=60", "db:${DB_PORT}",
+              "--", "sh", "-c", "alembic upgrade head && python3 run.py"]
