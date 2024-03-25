@@ -10,7 +10,7 @@ services:
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: ${DB_NAME}
     env_file:
-      - ../trading-conversion-bot/.env
+      - .env
     command: -p ${DB_PORT}
     expose:
       - 5432
@@ -19,7 +19,7 @@ services:
 
   app:
     build:
-      context: ../trading-conversion-bot
+      context: .
     image: onepantsu/trading-conversion-bot:latest
     container_name: trading-conversion-bot
     env_file:
