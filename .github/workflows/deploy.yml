@@ -46,8 +46,8 @@ jobs:
             ssh -o StrictHostKeyChecking=no -tt ${{ env.SERVER_USER }}@${{ env.SERVER_HOST }} -p ${{ env.SERVER_PORT }} '\
               { cd ${{ env.SERVER_PATH }}/${{ env.WORKING_DIR }} || \
               cd ${{ env.SERVER_PATH }} && \
-              git clone ${{ GIT_URL }}; } && \
-              cd ${{ WORKING_DIR }}; \
+              git clone ${{ env.GIT_URL }}; } && \
+              cd ${{ env.WORKING_DIR }}; \
               echo \"$ENV\" > .env && \
               docker-compose down && \
               git pull && \
