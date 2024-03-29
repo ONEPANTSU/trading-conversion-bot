@@ -49,9 +49,10 @@ class AdminSettingsRouter(Router):
         )
 
     @admin_check
-    async def admin_settings(self, message: Message):
+    async def admin_settings(self, message: Message, state: FSMContext):
+        await state.clear()
         admins = await self.admin_service.get_users()
-        lang_text = get_language(message.from_user.language_code)
+        lang_text = await self.get_lang_text(message.from_user.id)
         await message.answer(
             text=lang_text.messages["admins-list"],
             reply_markup=get_admin_settings_inline(admins, lang_text.buttons),
@@ -59,7 +60,7 @@ class AdminSettingsRouter(Router):
 
     @callback_admin_check
     async def remove_admin(self, callback: CallbackQuery):
-        lang_text = get_language(callback.from_user.language_code)
+        lang_text = await self.get_lang_text(callback.from_user.id)
         admin_id = callback.data.replace(REMOVE_ADMIN_DATA, "")
         admin = await self.admin_service.get_user(int(admin_id))
         callback_data = SUBMIT_REMOVE_ADMIN_DATA + admin_id + "-"
@@ -76,13 +77,14 @@ class AdminSettingsRouter(Router):
 
     @callback_admin_check
     async def remove_admin_submit(self, callback: CallbackQuery):
-        lang_text = get_language(callback.from_user.language_code)
+        lang_text = await self.get_lang_text(callback.from_user.id)
         admin_id, submit = callback.data.replace(
             SUBMIT_REMOVE_ADMIN_DATA, ""
         ).split("-")
         admin = await self.admin_service.get_user(int(admin_id))
         if submit == "yes":
-            await self.admin_service.delete_user(int(admin_id))
+            admin.role_id = DEFAULT_ROLES_ID["user"]
+            await self.admin_service.update_user(admin)
             await callback.message.edit_text(
                 text=lang_text.messages["admin-removed"].format(
                     username=admin.username
@@ -95,14 +97,14 @@ class AdminSettingsRouter(Router):
 
     @callback_admin_check
     async def add_admin(self, callback: CallbackQuery, state: FSMContext):
-        lang_text = get_language(callback.from_user.language_code)
+        lang_text = await self.get_lang_text(callback.from_user.id)
         await callback.message.answer(text=lang_text.messages["add-admin"])
         await callback.message.delete()
         await state.set_state(AddAdminState.set_admin)
 
     @admin_check
     async def add_admin_forward(self, message: Message, state: FSMContext):
-        lang_text = get_language(message.from_user.language_code)
+        lang_text = await self.get_lang_text(message.from_user.id)
         if message.forward_from:
             user = User(
                 id=message.forward_from.id,
@@ -127,7 +129,7 @@ class AdminSettingsRouter(Router):
     async def add_admin_submit(
         self, callback: CallbackQuery, state: FSMContext
     ):
-        lang_text = get_language(callback.from_user.language_code)
+        lang_text = await self.get_lang_text(callback.from_user.id)
         submit = callback.data.replace(SUBMIT_ADD_ADMIN_DATA, "")
         if submit == "yes":
             state_data = await state.get_data()
@@ -143,3 +145,7 @@ class AdminSettingsRouter(Router):
                 text=lang_text.messages["cancelled"]
             )
         await state.clear()
+
+    async def get_lang_text(self, user_id: int):
+        lang_code = await self.admin_service.get_user_lang_code(user_id)
+        return get_language(lang_code)

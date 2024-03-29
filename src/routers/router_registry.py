@@ -2,13 +2,14 @@ from src.routers.admin_routers.admin_settings_router import AdminSettingsRouter
 from src.routers.admin_routers.editor_settings_router import (
     EditorSettingsRouter,
 )
-from src.routers.command_router import CommandRouter
+from src.routers.common_routers.command_router import CommandRouter
+from src.routers.common_routers.language_router import LanguageRouter
 from src.routers.editor_routers.get_media_id_router import GetMediaIDRouter
 from src.routers.editor_routers.post_sending_router import PostSendingRouter
 from src.routers.editor_routers.private_post_sending_router import (
     PrivatePostSendingRouter,
 )
-from src.routers.user_routers.user_router import UserRouter
+from src.routers.user_routers.user_register_router import UserRegisterRouter
 from src.services.service_registry import ServiceRegistry
 
 
@@ -33,9 +34,10 @@ class RouterRegistry:
             services.editor_service, services.user_service
         )
         self.get_media_id_router = GetMediaIDRouter(services.editor_service)
-        self.user_router = UserRouter(
+        self.user_register_router = UserRegisterRouter(
             services.user_service, services.parsing_service
         )
+        self.language_router = LanguageRouter(services.user_service)
 
     def get_list(self):
         return [

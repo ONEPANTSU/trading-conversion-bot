@@ -55,9 +55,10 @@ class EditorSettingsRouter(Router):
         )
 
     @admin_check
-    async def editor_settings(self, message: Message):
+    async def editor_settings(self, message: Message, state: FSMContext):
+        await state.clear()
         editors = await self.editor_service.get_users()
-        lang_text = get_language(message.from_user.language_code)
+        lang_text = await self.get_lang_text(message.from_user.id)
         await message.answer(
             text=lang_text.messages["editors-list"],
             reply_markup=get_editor_settings_inline(
@@ -67,7 +68,7 @@ class EditorSettingsRouter(Router):
 
     @callback_admin_check
     async def remove_editor(self, callback: CallbackQuery):
-        lang_text = get_language(callback.from_user.language_code)
+        lang_text = await self.get_lang_text(callback.from_user.id)
         editor_id = callback.data.replace(REMOVE_EDITOR_DATA, "")
         editor = await self.editor_service.get_user(int(editor_id))
         callback_data = SUBMIT_REMOVE_EDITOR_DATA + editor_id + "-"
@@ -84,13 +85,14 @@ class EditorSettingsRouter(Router):
 
     @callback_admin_check
     async def remove_editor_submit(self, callback: CallbackQuery):
-        lang_text = get_language(callback.from_user.language_code)
+        lang_text = await self.get_lang_text(callback.from_user.id)
         editor_id, submit = callback.data.replace(
             SUBMIT_REMOVE_EDITOR_DATA, ""
         ).split("-")
         editor = await self.editor_service.get_user(int(editor_id))
         if submit == "yes":
-            await self.editor_service.delete_user(int(editor_id))
+            editor.role_id = DEFAULT_ROLES_ID["user"]
+            await self.editor_service.update_user(editor)
             await callback.message.edit_text(
                 text=lang_text.messages["editor-removed"].format(
                     username=editor.username
@@ -103,14 +105,14 @@ class EditorSettingsRouter(Router):
 
     @callback_admin_check
     async def add_editor(self, callback: CallbackQuery, state: FSMContext):
-        lang_text = get_language(callback.from_user.language_code)
+        lang_text = await self.get_lang_text(callback.from_user.id)
         await callback.message.answer(text=lang_text.messages["add-editor"])
         await callback.message.delete()
         await state.set_state(AddEditorState.set_editor)
 
     @admin_check
     async def add_editor_forward(self, message: Message, state: FSMContext):
-        lang_text = get_language(message.from_user.language_code)
+        lang_text = await self.get_lang_text(message.from_user.id)
         if message.forward_from:
             user = User(
                 id=message.forward_from.id,
@@ -135,7 +137,7 @@ class EditorSettingsRouter(Router):
     async def add_editor_submit(
         self, callback: CallbackQuery, state: FSMContext
     ):
-        lang_text = get_language(callback.from_user.language_code)
+        lang_text = await self.get_lang_text(callback.from_user.id)
         submit = callback.data.replace(SUBMIT_ADD_EDITOR_DATA, "")
         if submit == "yes":
             state_data = await state.get_data()
@@ -151,3 +153,7 @@ class EditorSettingsRouter(Router):
                 text=lang_text.messages["cancelled"]
             )
         await state.clear()
+
+    async def get_lang_text(self, user_id: int):
+        lang_code = await self.admin_service.get_user_lang_code(user_id)
+        return get_language(lang_code)

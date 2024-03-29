@@ -15,3 +15,19 @@ def get_submit_inline(
         ]
     ]
     return InlineKeyboardMarkup(inline_keyboard=keyboard)
+
+
+def get_language_inline(
+    callback_data, buttons: dict[str, str]
+) -> InlineKeyboardMarkup:
+    keyboard = [
+        [
+            InlineKeyboardButton(
+                text=buttons["ru"], callback_data=f"{callback_data}ru"
+            ),
+            InlineKeyboardButton(
+                text=buttons["en"], callback_data=f"{callback_data}en"
+            ),
+        ]
+    ]
+    return InlineKeyboardMarkup(inline_keyboard=keyboard)

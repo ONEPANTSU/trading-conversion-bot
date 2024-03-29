@@ -8,7 +8,7 @@ from src.core.config.config import Config
 from src.core.database import DataBase
 from src.middleware.scheduler_middleware import SchedulerMiddleware
 from src.repositories.repository_registry import RepositoryRegistry
-from src.routers.routers import RouterRegistry
+from src.routers.router_registry import RouterRegistry
 from src.services.service_registry import ServiceRegistry
 from src.utils.language_handler import LANGUAGES, get_language
 

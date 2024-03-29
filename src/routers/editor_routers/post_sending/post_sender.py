@@ -1,3 +1,5 @@
+from abc import ABC, abstractmethod
+
 from aiogram.enums import ContentType
 from aiogram.fsm.context import FSMContext
 from aiogram.types import (
@@ -12,11 +14,11 @@ from aiogram.types import (
 from src.services.users.user_service import UserService
 
 
-class PostSender:
+class PostSender(ABC):
     def __init__(self, user_service: UserService):
         self.user_service = user_service
 
-    async def get_content(self, message: Message, state: FSMContext):
+    async def resend_content(self, message: Message, state: FSMContext):
         if message.content_type == ContentType.VIDEO_NOTE:
             await self.__get_video_note_to_send(message, state)
         elif message.content_type == ContentType.VOICE:
@@ -88,7 +90,7 @@ class PostSender:
     ):
         language_code = state_data["language_code"]
         file_id = state_data["video_note"]
-        users = await self.__get_users(language_code)
+        users = await self._get_users(language_code)
         for user in users:
             await callback.bot.send_video_note(
                 chat_id=user.id,
@@ -100,7 +102,7 @@ class PostSender:
     ):
         language_code = state_data["language_code"]
         file_id = state_data["voice"]
-        users = await self.__get_users(language_code)
+        users = await self._get_users(language_code)
         for user in users:
             await callback.bot.send_voice(
                 chat_id=user.id,
@@ -113,7 +115,7 @@ class PostSender:
         media = state_data["media"]
         text = state_data["text"]
         language_code = state_data["language_code"]
-        users = await self.__get_users(language_code)
+        users = await self._get_users(language_code)
         for user in users:
             if len(media) > 0:
                 await callback.bot.send_media_group(
@@ -122,5 +124,6 @@ class PostSender:
             else:
                 await callback.bot.send_message(chat_id=user.id, text=text)
 
-    async def __get_users(self, language_code: str):
-        return await self.user_service.get_users_by_language(language_code)
+    @abstractmethod
+    async def _get_users(self, language_code: str):
+        raise NotImplementedError

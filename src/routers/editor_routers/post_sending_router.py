@@ -1,7 +1,9 @@
 from src.routers.editor_routers.abstract_post_sending_router import (
     AbstractPostSendingRouter,
 )
-from src.routers.editor_routers.post_sending.post_sender import PostSender
+from src.routers.editor_routers.post_sending.public_post_sender import (
+    PublicPostSender,
+)
 from src.routers.utils.callbacks.editor_callback_data import (
     CHOOSE_MAILING_LANGUAGE_DATA,
     SUBMIT_SEND_MAILING_MESSAGE_DATA,
@@ -27,5 +29,5 @@ class PostSendingRouter(AbstractPostSendingRouter):
             choose_lang_callback_data=CHOOSE_MAILING_LANGUAGE_DATA,
             submit_send_callback_data=SUBMIT_SEND_MAILING_MESSAGE_DATA,
             state=SendPostState,
-            post_sender=PostSender,
+            post_sender=PublicPostSender,
         )

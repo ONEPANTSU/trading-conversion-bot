@@ -23,7 +23,10 @@ MESSAGES = {
     "admin-start": "Привет, Администратор\!",
     "editor-start": "Привет, Редактор\!",
     "user-start": user_start,
+    "user-lang-settings": "🔠 Выберите язык:",
+    "user-lang-changed": "Язык изменён\!",
 
+    "mexc-referral": "Зарегистрируйтесь [*здесь*](https://www.mexc.com/ru-RU/register?inviteCode=mexc-cryptowave)",
     "mexc-register": "После регистрации в MEXC отправьте свой UUID:",
     "remind": "Напоминаю\! :3",
     "mexc-error": "Неверный UUID\. Попробуйте ещё раз\.",
