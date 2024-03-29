@@ -6,9 +6,9 @@ from src.core.dto.user import User
 from src.routers.utils.keyboards.admin_keyboards import get_admin_keyboard
 from src.routers.utils.keyboards.editor_keyboards import get_editor_keyboard
 from src.routers.utils.keyboards.user_keyboards import get_user_start_inline
-from src.services.admin_service import AdminService
-from src.services.editor_service import EditorService
-from src.services.user_service import UserService
+from src.services.users.admin_service import AdminService
+from src.services.users.editor_service import EditorService
+from src.services.users.user_service import UserService
 from src.utils.language_handler import get_language
 from static.video import get_videos
 

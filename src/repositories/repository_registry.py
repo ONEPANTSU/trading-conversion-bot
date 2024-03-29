@@ -4,7 +4,7 @@ from src.repositories.editor import EditorSQLAlchemyRepository
 from src.repositories.user import UserSQLAlchemyRepository
 
 
-class Repositories:
+class RepositoryRegistry:
 
     def __init__(self, database: DataBase) -> None:
         self.user_repository = UserSQLAlchemyRepository(database)

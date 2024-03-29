@@ -9,7 +9,7 @@ from aiogram.types import (
     Message,
 )
 
-from src.services.user_service import UserService
+from src.services.users.user_service import UserService
 
 
 class PostSender:

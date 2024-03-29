@@ -1,6 +1,6 @@
 from src.repositories.admin import AdminAbstractRepository
 from src.repositories.editor import EditorAbstractRepository
-from src.services.user_service import UserService
+from src.services.users.user_service import UserService
 
 
 class EditorService(UserService):

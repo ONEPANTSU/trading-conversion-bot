@@ -2,12 +2,14 @@ from aiogram import Router
 from aiogram.fsm.context import FSMContext
 from aiogram.types import Message
 
-from src.routers.utils.keyboards.buttons.editor_buttons import get_editor_buttons
 from src.routers.utils.checkers.editor_checker import editor_check
 from src.routers.utils.escape_markdown import escape_markdown
 from src.routers.utils.filters.buttons_filter import ButtonsFilter
+from src.routers.utils.keyboards.buttons.editor_buttons import (
+    get_editor_buttons,
+)
 from src.routers.utils.states.editor_states.media_id_state import MediaIDState
-from src.services.editor_service import EditorService
+from src.services.users.editor_service import EditorService
 from src.utils.language_handler import get_language
 
 

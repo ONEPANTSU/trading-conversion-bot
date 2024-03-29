@@ -4,7 +4,7 @@ from dataclasses import asdict
 from src.core.dto.user import User
 from src.core.utils.default_language_code import DEFAULT_LANGUAGE_CODE
 from src.repositories.user import UserAbstractRepository
-from src.services.abstract_service import AbstractService
+from src.services.users.abstract_service import AbstractService
 
 
 class UserService(AbstractService):
