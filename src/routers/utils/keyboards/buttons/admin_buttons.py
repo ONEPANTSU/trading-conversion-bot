@@ -1,9 +1,12 @@
 from collections import defaultdict
 
+from src.routers.utils.keyboards.buttons.common_buttons import COMMON_BUTTONS
 from src.routers.utils.keyboards.buttons.editor_buttons import EDITOR_BUTTONS
 from src.utils.language_handler import LANGUAGES
 
-ADMIN_BUTTONS = ["admins-settings", "editors-settings"] + EDITOR_BUTTONS
+ADMIN_BUTTONS = (
+    ["admins-settings", "editors-settings"] + EDITOR_BUTTONS + COMMON_BUTTONS
+)
 
 
 def get_admin_buttons():

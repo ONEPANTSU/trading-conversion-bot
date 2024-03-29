@@ -21,7 +21,6 @@ class UserSQLAlchemyRepository(SQLAlchemyRepository, ABC):
         return await super().create(model)
 
     async def update(self, model: model_table) -> None | IntegrityError:
-        model.role_id = self.role_id
         return await super().update(model)
 
     async def get_by_language(self, language_code: str) -> list[User]:

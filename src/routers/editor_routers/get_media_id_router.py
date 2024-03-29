@@ -32,7 +32,8 @@ class GetMediaIDRouter(Router):
 
     @editor_check
     async def get_media_id(self, message: Message, state: FSMContext):
-        lang_text = get_language(message.from_user.language_code)
+        await state.clear()
+        lang_text = await self.get_lang_text(message.from_user.id)
         await message.answer(
             text=lang_text.messages["send-media"],
         )
@@ -46,7 +47,7 @@ class GetMediaIDRouter(Router):
                 text=escape_markdown(media_id),
             )
         else:
-            lang_text = get_language(message.from_user.language_code)
+            lang_text = await self.get_lang_text(message.from_user.id)
             await message.answer(text=lang_text.messages["media-type-error"])
         await state.clear()
 
@@ -64,3 +65,7 @@ class GetMediaIDRouter(Router):
         elif message.animation:
             media_id = message.animation.file_id
         return media_id
+
+    async def get_lang_text(self, user_id: int):
+        lang_code = await self.editor_service.get_user_lang_code(user_id)
+        return get_language(lang_code)

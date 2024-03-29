@@ -14,11 +14,11 @@ from src.services.users.user_service import UserService
 from src.utils.language_handler import get_language
 
 
-class UserRouter(Router):
+class UserRegisterRouter(Router):
     def __init__(
         self, user_service: UserService, parsing_service: ParsingService
     ):
-        super().__init__(name="user-router")
+        super().__init__(name="user-register-router")
         self.user_service = user_service
         self.parsing_service = parsing_service
 
@@ -31,7 +31,9 @@ class UserRouter(Router):
         scheduler: AsyncIOScheduler,
         state: FSMContext,
     ):
-        lang_text = get_language(callback.from_user.language_code)
+
+        lang_text = await self.get_lang_text(callback.from_user.id)
+        await callback.message.answer(lang_text.messages["mexc-referral"])
         await callback.message.answer(lang_text.messages["mexc-register"])
         jobs = []
         for minutes in [10, 30, 60, 120, 1440, 2880]:
@@ -84,10 +86,14 @@ class UserRouter(Router):
         user.privacy = True
         await self.user_service.update_user(user)
 
-        lang_text = get_language(message.from_user.language_code)
+        lang_text = await self.get_lang_text(message.from_user.id)
         await message.answer(lang_text.messages["mexc-success"])
 
-    @staticmethod
-    async def __registration_failed(message: Message):
-        lang_text = get_language(message.from_user.language_code)
+    async def __registration_failed(self, message: Message):
+        lang_text = await self.get_lang_text(message.from_user.id)
+
         await message.answer(lang_text.messages["mexc-error"])
+
+    async def get_lang_text(self, user_id: int):
+        lang_code = await self.user_service.get_user_lang_code(user_id)
+        return get_language(lang_code)

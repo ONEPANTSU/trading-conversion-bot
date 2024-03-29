@@ -2,7 +2,10 @@ MESSAGES = {
     "admin-start": "Hi there, admin\!",
     "editor-start": "Hi there, editor\!",
     "user-start": "Hi there\!",
+    "user-lang-settings": "🔠 Choose language:",
+    "user-lang-changed": "Language changed\!",
 
+    "mexc-referral": "Register [*here*](https://www.mexc.com/ru-RU/register?inviteCode=mexc-cryptowave)",
     "mexc-register": "Please, send UUID from MEXC\!",
     "remind": "Remind\! :3",
     "mexc-error": "Wrong UUID\. Try again\.",

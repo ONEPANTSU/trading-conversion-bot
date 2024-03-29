@@ -1,5 +1,6 @@
 BUTTONS = {
     "user-start": "Погнали! ✨",
+    "user-lang-settings": "🇷🇺 Поменять язык",
 
     "admins-settings": "⚙️ Админы",
     "editors-settings": "⚙️ Редакторы",

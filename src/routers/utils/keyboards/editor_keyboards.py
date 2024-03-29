@@ -1,6 +1,4 @@
 from aiogram.types import (
-    InlineKeyboardButton,
-    InlineKeyboardMarkup,
     KeyboardButton,
     ReplyKeyboardMarkup,
 )
@@ -15,19 +13,3 @@ def get_editor_keyboard(buttons: dict[str, str]) -> ReplyKeyboardMarkup:
     for button in get_editor_buttons():
         keyboard.append([KeyboardButton(text=buttons[button])])
     return ReplyKeyboardMarkup(keyboard=keyboard, resize_keyboard=True)
-
-
-def get_language_inline(
-    callback_data, buttons: dict[str, str]
-) -> InlineKeyboardMarkup:
-    keyboard = [
-        [
-            InlineKeyboardButton(
-                text=buttons["ru"], callback_data=f"{callback_data}ru"
-            ),
-            InlineKeyboardButton(
-                text=buttons["en"], callback_data=f"{callback_data}en"
-            ),
-        ]
-    ]
-    return InlineKeyboardMarkup(inline_keyboard=keyboard)

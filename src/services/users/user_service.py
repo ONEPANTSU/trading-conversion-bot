@@ -13,6 +13,12 @@ class UserService(AbstractService):
     def __init__(self, repository: UserAbstractRepository):
         super().__init__(repository)
 
+    async def get_user_lang_code(self, user_id) -> str:
+        user = await self.get_user(user_id)
+        if user:
+            return user.language_code
+        return DEFAULT_LANGUAGE_CODE
+
     async def get_user(self, user_id) -> User | None:
         model = await self.repository.get(user_id)
         if model:
@@ -34,6 +40,10 @@ class UserService(AbstractService):
             language_code
         )
         return [User(**user.get_dict()) for user in models]
+
+    async def create_user_if_not_exist(self, user: User) -> None:
+        if not await self.get_user(user.id):
+            return await self.create_user(user)
 
     async def create_user(self, user: User) -> None:
         if user.language_code == "":
