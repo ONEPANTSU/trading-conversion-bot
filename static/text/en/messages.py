@@ -3,6 +3,11 @@ MESSAGES = {
     "editor-start": "Hi there, editor\!",
     "user-start": "Hi there\!",
 
+    "mexc-register": "Please, send UUID from MEXC\!",
+    "remind": "Remind\! :3",
+    "mexc-error": "Wrong UUID\. Try again\.",
+    "mexc-success": "You have successfully registered in MEXC\. Now you can see hidden content\!",
+
     "admins-list": "Admins list:",
     "remove-admin-submit": "Are you sure you want to remove {username}?",
     "admin-removed": "{username} is not admin anymore",

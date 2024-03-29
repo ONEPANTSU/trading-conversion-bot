@@ -8,12 +8,13 @@ from src.routers.editor_routers.post_sending_router import PostSendingRouter
 from src.routers.editor_routers.private_post_sending_router import (
     PrivatePostSendingRouter,
 )
-from src.services.services import Services
+from src.routers.user_routers.user_router import UserRouter
+from src.services.service_registry import ServiceRegistry
 
 
-class Routers:
+class RouterRegistry:
 
-    def __init__(self, services: Services):
+    def __init__(self, services: ServiceRegistry):
         self.command_router = CommandRouter(
             services.admin_service,
             services.editor_service,
@@ -32,6 +33,9 @@ class Routers:
             services.editor_service, services.user_service
         )
         self.get_media_id_router = GetMediaIDRouter(services.editor_service)
+        self.user_router = UserRouter(
+            services.user_service, services.parsing_service
+        )
 
     def get_list(self):
         return [

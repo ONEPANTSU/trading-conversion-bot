@@ -2,12 +2,14 @@ from aiogram import Bot, Dispatcher
 from aiogram.client.default import DefaultBotProperties
 from aiogram.fsm.storage.memory import MemoryStorage
 from aiogram.types import BotCommand
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
 from src.core.config.config import Config
 from src.core.database import DataBase
-from src.repositories.repositories import Repositories
-from src.routers.routers import Routers
-from src.services.services import Services
+from src.middleware.scheduler_middleware import SchedulerMiddleware
+from src.repositories.repository_registry import RepositoryRegistry
+from src.routers.routers import RouterRegistry
+from src.services.service_registry import ServiceRegistry
 from src.utils.language_handler import LANGUAGES, get_language
 
 
@@ -21,7 +23,7 @@ async def start_bot():
         ),
     )
     dp = Dispatcher(storage=MemoryStorage())
-
+    register_middlewares(dp)
     include_routers(dp, config)
     await bot.delete_webhook(drop_pending_updates=True)
     await set_commands(bot)
@@ -29,11 +31,17 @@ async def start_bot():
     await dp.start_polling(bot, allowed_updates=dp.resolve_used_update_types())
 
 
+def register_middlewares(dp: Dispatcher):
+    scheduler = AsyncIOScheduler(timezone="Europe/Moscow")
+    scheduler.start()
+    dp.update.middleware.register(SchedulerMiddleware(scheduler))
+
+
 def include_routers(dp: Dispatcher, config: Config):
     database = DataBase(config.database)
-    repositories = Repositories(database)
-    services = Services(repositories)
-    routers = Routers(services)
+    repositories = RepositoryRegistry(database)
+    services = ServiceRegistry(repositories, config.parser)
+    routers = RouterRegistry(services)
 
     for router in routers.get_list():
         dp.include_router(router)

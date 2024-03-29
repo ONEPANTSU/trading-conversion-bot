@@ -24,6 +24,11 @@ MESSAGES = {
     "editor-start": "Привет, Редактор\!",
     "user-start": user_start,
 
+    "mexc-register": "После регистрации в MEXC отправьте свой UUID:",
+    "remind": "Напоминаю\! :3",
+    "mexc-error": "Неверный UUID\. Попробуйте ещё раз\.",
+    "mexc-success": "Вы успешно зарегистрировались в MEXC\. Теперь вам доступен скрытый контент\!",
+
     "admins-list": "Список администраторов:",
     "remove-admin-submit": "Вы уверены, что хотите удалить {username}?",
     "admin-removed": "{username} больше не администратор",

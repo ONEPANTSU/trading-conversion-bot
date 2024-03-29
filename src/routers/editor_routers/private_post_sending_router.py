@@ -11,8 +11,8 @@ from src.routers.utils.callbacks.editor_callback_data import (
 from src.routers.utils.states.editor_states.send_private_post_state import (
     SendPrivatePostState,
 )
-from src.services.editor_service import EditorService
-from src.services.user_service import UserService
+from src.services.users.editor_service import EditorService
+from src.services.users.user_service import UserService
 
 
 class PrivatePostSendingRouter(AbstractPostSendingRouter):

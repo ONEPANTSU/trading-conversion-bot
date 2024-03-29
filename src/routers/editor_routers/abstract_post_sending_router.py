@@ -2,13 +2,15 @@ from aiogram import F, Router
 from aiogram.fsm.context import FSMContext
 from aiogram.types import CallbackQuery, Message
 
-from src.routers.utils.keyboards.buttons.editor_buttons import get_editor_buttons
 from src.routers.editor_routers.post_sending.post_sender import PostSender
 from src.routers.utils.checkers.editor_checker import (
     callback_editor_check,
     editor_check,
 )
 from src.routers.utils.filters.buttons_filter import ButtonsFilter
+from src.routers.utils.keyboards.buttons.editor_buttons import (
+    get_editor_buttons,
+)
 from src.routers.utils.keyboards.common_keyboards import get_submit_inline
 from src.routers.utils.keyboards.editor_keyboards import get_language_inline
 from src.routers.utils.states.editor_states.send_post_state import (
@@ -17,8 +19,8 @@ from src.routers.utils.states.editor_states.send_post_state import (
 from src.routers.utils.states.editor_states.send_private_post_state import (
     SendPrivatePostState,
 )
-from src.services.editor_service import EditorService
-from src.services.user_service import UserService
+from src.services.users.editor_service import EditorService
+from src.services.users.user_service import UserService
 from src.utils.language_handler import get_language
 
 

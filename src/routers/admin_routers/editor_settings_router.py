@@ -2,7 +2,6 @@ from aiogram import F, Router
 from aiogram.fsm.context import FSMContext
 from aiogram.types import CallbackQuery, Message
 
-from src.routers.utils.keyboards.buttons.admin_buttons import get_admin_buttons
 from src.core.dto.user import User
 from src.core.utils.default_roles import DEFAULT_ROLES_ID
 from src.routers.utils.callbacks.admin_callback_data import (
@@ -19,12 +18,13 @@ from src.routers.utils.filters.buttons_filter import ButtonsFilter
 from src.routers.utils.keyboards.admin_keyboards import (
     get_editor_settings_inline,
 )
+from src.routers.utils.keyboards.buttons.admin_buttons import get_admin_buttons
 from src.routers.utils.keyboards.common_keyboards import get_submit_inline
 from src.routers.utils.states.admin_states.add_editor_state import (
     AddEditorState,
 )
-from src.services.admin_service import AdminService
-from src.services.editor_service import EditorService
+from src.services.users.admin_service import AdminService
+from src.services.users.editor_service import EditorService
 from src.utils.language_handler import get_language
 
 

@@ -6,11 +6,14 @@ from yaml import safe_load
 
 from src.core.config.bot_config import BotConfig, ParseMode
 from src.core.config.db_config import DataBaseConfig
+from src.core.config.parsers.mexc_config import MEXCConfig
+from src.core.config.parsers.parser_config import ParserConfig
 
 
 class Config:
     database: DataBaseConfig
     bot: BotConfig
+    parser: ParserConfig
 
     def __init__(self) -> None:
         self.load()
@@ -22,6 +25,7 @@ class Config:
         self.set_bot(configs["bot"])
         self.set_database(configs["database"])
         self.set_logger(configs["logger"])
+        self.set_parser()
 
     def set_bot(self, bot_config) -> None:
         self.bot = BotConfig(
@@ -48,4 +52,12 @@ class Config:
             level=logger_config["level"],
             rotation=logger_config["rotation"],
             compression=logger_config["compression"],
+        )
+
+    def set_parser(self) -> None:
+        self.parser = ParserConfig(
+            mexc_config=MEXCConfig(
+                api_key=os.environ.get("MEXC_API_KEY"),
+                secret_key=os.environ.get("MEXC_SECRET_KEY"),
+            )
         )
